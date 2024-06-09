@@ -13,4 +13,6 @@ public class Peca{
     protected Board getBoard(){
         return board;
     }
+
+
 }
