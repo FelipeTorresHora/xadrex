@@ -2,53 +2,74 @@ package boardgame;
 
 public class Board {
 
-    private int linha;
-    private int coluna;
-    private Peca[][] pecas;
+    private int rows;
+    private int columns;
+    private Piece[][] pieces;
 
-    public Board(int linha, int coluna) {
-        if (linha < 1 || coluna < 1) {
-            throw new BoardException("Error criando tabuleiro: precisa ter pelo menos 1 linha e coluna");
+    public Board(int rows, int columns) {
+        if (rows < 1 || columns < 1) {
+            throw new BoardException("Error creating board: there must be at least 1 row and 1 column");
         }
-        this.linha = linha;
-        this.coluna = coluna;
-        pecas = new Peca[linha][coluna];
-    }
-    public int getLinha() {
-        return linha;
+        this.rows = rows;
+        this.columns = columns;
+        pieces = new Piece[rows][columns];
     }
 
-    public int getColuna() {
-        return coluna;
+    public int getRows() {
+        return rows;
     }
 
-    public Peca peca(int linha, int coluna) {
-        return pecas[linha][coluna];
-    }
-    public Peca peca(Position position){
-        if (!positionExists(position)){
-            throw new BoardException("Posição não está no tabuleiro");
-        }
-        return pecas[position.getLinha()][position.getColuna()];
-    }
-    public void placePiece(Peca peca,Position position){
-        if (thereIsAPeca(position)){
-            throw new BoardException("Já tem uma peça nessa posição" + position);
-        }
-        pecas[position.getLinha()][position.getColuna()] = peca;
-        peca.position = position;
+    public int getColumns() {
+        return columns;
     }
 
-    private boolean positionExists(int linha, int coluna){
-        return linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas;
-    }
-    private boolean positionExists(Position position){
-        return positionExists(position.getLinha(), position.getColuna());
-    }
-    public boolean thereIsAPeca(Position position){
-        if (thereIsAPeca(position)){
-            throw new BoardException("Já tem uma peça nessa posição" + position);
+    public Piece piece(int row, int column) {
+        if (!positionExists(row, column)) {
+            throw new BoardException("Position not on the board");
         }
-        return peca(position) != null;
+        return pieces[row][column];
+    }
+
+    public Piece piece(Position position) {
+        if (!positionExists(position)) {
+            throw new BoardException("Position not on the board");
+        }
+        return pieces[position.getRow()][position.getColumn()];
+    }
+
+    public void placePiece(Piece piece, Position position) {
+        if (thereIsAPiece(position)) {
+            throw new BoardException("There is already a piece on position " + position);
+        }
+        pieces[position.getRow()][position.getColumn()] = piece;
+        piece.position = position;
+    }
+
+    public Piece removePiece(Position position) {
+        if (!positionExists(position)) {
+            throw new BoardException("Position not on the board");
+        }
+        if (piece(position) == null) {
+            return null;
+        }
+        Piece aux = piece(position);
+        aux.position = null;
+        pieces[position.getRow()][position.getColumn()] = null;
+        return aux;
+    }
+
+    private boolean positionExists(int row, int column) {
+        return row >= 0 && row < rows && column >= 0 && column < columns;
+    }
+
+    public boolean positionExists(Position position) {
+        return positionExists(position.getRow(), position.getColumn());
+    }
+
+    public boolean thereIsAPiece(Position position) {
+        if (!positionExists(position)) {
+            throw new BoardException("Position not on the board");
+        }
+        return piece(position) != null;
     }
 }
