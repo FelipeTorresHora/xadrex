@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.Bishop;
@@ -314,7 +315,7 @@ public class ChessMatch {
         piecesOnTheBoard.add(piece);
     }
 
-    private void initialSetup(){
+    private void initialSetup() {
         placeNewPiece('a', 1, new Rook(board, Color.WHITE));
         placeNewPiece('b', 1, new Knight(board, Color.WHITE));
         placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
@@ -350,4 +351,3 @@ public class ChessMatch {
         placeNewPiece('h', 7, new Pawn(board, Color.BLACK, this));
     }
 }
-
